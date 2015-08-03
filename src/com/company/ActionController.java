@@ -131,7 +131,7 @@ public class ActionController implements Serializable {
      * Get change to fight with monster
      */
     public double getChange(Monsters monster) {
-        return player.getSkill() / monster.getSkill();
+        return (player.getSkill() + player.getAttack() + player.getDefence()) / (monster.getSkill() + monster.getDefence() + monster.getAttack());
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class GameController implements Serializable {
     private ActionController action;
-    private Scanner in = new Scanner(System.in);
+    private static Scanner in = new Scanner(System.in);
     private static GameController instance;
 
     private GameController() {
@@ -32,6 +32,7 @@ public class GameController implements Serializable {
      * call it after initialize game
      */
     public void start() {
+        instance = null;
         prnt("Choose action:");
         prnt("1 - new  game");
         prnt("2 - load game");
@@ -42,8 +43,9 @@ public class GameController implements Serializable {
             case 2:
                 try {
                     load();
+                    play();
                 } catch (ClassNotFoundException e) {
-                    prnt("Can't find save game, sorry.");
+                    prnt("Can't find load game, sorry.");
                     start();
                 } catch (IOException e) {
                     prnt("Can't load game, sorry");
@@ -52,7 +54,6 @@ public class GameController implements Serializable {
                 break;
             default:
                 break;
-
         }
     }
 
@@ -81,6 +82,7 @@ public class GameController implements Serializable {
                 case 3:
                     try {
                         save();
+                        prnt("Success save game.");
                     } catch (IOException e) {
                         e.printStackTrace();
                         prnt("Can't save game, sorry");
@@ -274,7 +276,7 @@ public class GameController implements Serializable {
     private void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("save.out");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(GameController.getInstance());
+        oos.writeObject(ActionController.getInstance());
         oos.flush();
         fos.close();
         oos.close();
@@ -286,7 +288,7 @@ public class GameController implements Serializable {
     private void load() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("save.out");
         ObjectInputStream oin = new ObjectInputStream(fis);
-        GameController.instance = (GameController) oin.readObject();
+        this.action = (ActionController) oin.readObject();
         fis.close();
         oin.close();
     }

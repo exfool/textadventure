@@ -9,10 +9,10 @@ import java.util.Random;
 public class ActionController implements Serializable {
     private static ActionController instance;
     private Rooms currentRoom;
-    private Random rnd = new Random();
+    private static Random rnd = new Random();
 
     //settings
-    private Player player = new Player(10, 10, 1000, 10);
+    private Player player = new Player(10, 10, 500, 10);
     private Shop shop = new Shop(10, 1, 10);
     private int countRooms = 10;
     private int hard = 1;
